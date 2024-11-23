@@ -21,7 +21,7 @@
 
     <!-- foormularioooo-->
     <div class="row justify-content-center py-2">
-        <div class="col-12 col-md-6 d-flex flex-column justify-content-center">
+        <div class="col-12 col-md-8 d-flex flex-column justify-content-center">
             <div class="py-3">
                 <small>Paso 1/3</small>
                 <h3>Elige tus Ganadores</h3>
@@ -30,9 +30,11 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Local</th>
-                            <th>Empate</th>
-                            <th>Visitante</th>
+                            <th>Local:</th>
+                            <th>Empate:</th>
+                            <th>Visitante:</th>
+                            <th>Datos:</th>
+                            <th>Fecha:</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,12 +58,22 @@
                                     name="partido_{{$index+1}}" value="V">
                                 <label class="form-check-label">{{partido.visitante.nombre}}</label>
                             </td>
+                            <td>
+                                <small>{{partido.nota}}</small>
+                            </td>
+                            <td>
+                                <small>{{partido.fecha | date:'yyyy, MM, dd'}}</small>
+                            </td>
                         </tr>
                         }
                     </tbody>
                 </table>
                 <div>
                     <button class="btn btn-warning" (click)="agregar()">Agrega Quiniela</button>
+        
+                    <button class="btn btn-primary" onclick="window.open('https://docs.google.com/spreadsheets/d/1-3IijMH8JCEJIaQMlTjYyl6ckUBcDTDyrRjCp4jXCwY/edit?usp=sharing', '_blank')">
+                        Ver Premio Ocumulado
+                    </button>                    
                 </div>
             </form>
 
@@ -91,7 +103,7 @@
             </div>
         </div>
         <div class="col-md-5 col-sm-12 pt-4">
-            <hr>
+           
             <b><p>Total:$ {{resultados.length * 10}} MXN</p></b>
             <form class="form my-2" [formGroup]="formularioWhatsApp">
                 <label class="form-check-label">Nombre y Apellido: </label>
