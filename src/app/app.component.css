@@ -1,0 +1,53 @@
+body{
+    color: black;
+    padding: 0px;
+    margin: 0px;
+}
+
+
+.contenedor-encabezado{
+    background-image: linear-gradient(to top, #cdb4dbf3 10%, #ffafccf1 100%),  url(#);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;  
+    padding: 10vh 0vh 8vh 0vh; 
+
+}
+
+.contenedor-temporizador{
+    background-color: rgba(226, 226, 226, 0.274) !important;
+}
+
+.contenedor-temporizador__lista{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.c1{
+    background-color: beige;
+}
+
+
+/*=============== ESTILOS FORMULARIO ==============*/
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+.container {
+    max-width: 400px;
+    margin: auto;
+}
+.bloque {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.tiempo {
+    background-color: #f0f0f0;
+    margin: 5px 10;
+    padding: 5px;
+    border-radius: 3px;
+}
