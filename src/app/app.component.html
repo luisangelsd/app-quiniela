@@ -1,12 +1,12 @@
 <div class="container-fluid">
-    <!---->
+    <!----------------------------------------------------------->
     <div class="row contenedor-encabezado justify-content-center">
         <div class="col-lg-5 col-sm-12 text-center">
             <h1>💰⚽🏆</h1>
             <h1><strong>¡ACIERTA TODOS LOS RESULTADOS CON TU QUINIELA FUTBOLERA!</strong></h1>
         </div>
     </div>
-    <!---->
+    <!----------------------------------------------------------->
     <div class="row contenedor-temporizador justify-content-center py-2">
         <div class="col-md-5 col-sm-12 contenedor-temporizador__lista">
             <strong>¡Apresura antes de que comience el primer partido!</strong>
@@ -18,8 +18,8 @@
             </ul>
         </div>
     </div>
-
-    <!-- foormularioooo-->
+    <!----------------------------------------------------------->
+    <!-- foormulario-->
     <div class="row justify-content-center py-2">
         <div class="col-12 col-md-8 d-flex flex-column justify-content-center">
             <div class="py-3">
@@ -69,20 +69,16 @@
                     </tbody>
                 </table>
                 <div>
-                    <button class="btn btn-warning" (click)="agregar()">Agrega Quiniela</button>
-        
+                    <button class="btn btn-warning" (click)="agregar()">
+                        Agrega Quiniela
+                    </button>        
                     <button class="btn btn-primary" onclick="window.open('https://docs.google.com/spreadsheets/d/1-3IijMH8JCEJIaQMlTjYyl6ckUBcDTDyrRjCp4jXCwY/edit?usp=sharing', '_blank')">
                         Ver Premio Ocumulado
                     </button>                    
                 </div>
             </form>
-
         </div>
     </div>
-
-    <!---->
-    <small id="ancla-enviar"></small>
-    <!---->
     <hr>
     @if (resultados.length > 0) {
     <div class="row  d-flex flex-column align-items-center py-4" style="background-color: rgb(241, 241, 241);">
@@ -102,9 +98,8 @@
                 }
             </div>
         </div>
-        <div class="col-md-5 col-sm-12 pt-4">
-           
-            <b><p>Total:$ {{resultados.length * 10}} MXN</p></b>
+        <div class="col-md-5 col-sm-12 pt-4">           
+            <b><p>Total:$ {{getTotalQuiniela()}} MXN</p></b>
             <form class="form my-2" [formGroup]="formularioWhatsApp">
                 <label class="form-check-label">Nombre y Apellido: </label>
                 <input formControlName="nombre" class="form-control" type="text" name="nombre">
@@ -114,6 +109,9 @@
     </div>
     }
 
+     <!----------------------------------------------------------->
+    <small id="ancla-enviar"></small>
+    <!----------------------------------------------------------->
 </div>
 
 <router-outlet />

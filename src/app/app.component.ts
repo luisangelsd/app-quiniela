@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HomeComponent } from './Quinielas/Pages/home/home.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
 
   //======================= VERIABLES =======================//
   protected listDtoPartido: DtoPartido[] = [];
@@ -52,10 +52,18 @@ export class AppComponent implements OnInit, OnDestroy {
   protected lasPalmas: DtoEquipo= new DtoEquipo('Las Palmas','lasPalmas.png');
   protected liverpool: DtoEquipo= new DtoEquipo('Liverpool','liverpool.png');
   protected celtic: DtoEquipo= new DtoEquipo('Celtic','celtic.png');
-  protected clubBrugge: DtoEquipo= new DtoEquipo('Club Brugge','club-brugge.png');  
+  protected clubBrugge: DtoEquipo= new DtoEquipo('Club Brugge','club-brugge.png'); 
+  
+  protected monaco: DtoEquipo= new DtoEquipo('Monaco','monaco.png');  
+  protected benfica: DtoEquipo= new DtoEquipo('Benfica','benfica.png');  
+  protected psv: DtoEquipo= new DtoEquipo('PSV','psv.png');  
+  protected shakhtar: DtoEquipo= new DtoEquipo('Shakhtar','shakhtar.png'); 
+
   protected url: string= Constantes.URL_IMAGENES;
 
   public resultados: string[] = [];
+  public costoQuiniela : number = 20;
+
   protected nota1 : string='Partido de Ida';
   protected nota2 : string='Partido de Vuelta';
   protected nota3: string ='UEFA Champions League';
@@ -80,18 +88,22 @@ export class AppComponent implements OnInit, OnDestroy {
       nombre: new FormControl('', [Validators.required])
     });
 
+
+    ngAfterViewChecked(): void {
+
+    }
+
   //------------------------------//
   protected cargarPartidos():void {
 
+    this.listDtoPartido.push(new DtoPartido(this.monaco, this.benfica, this.fecha1, this.nota3));
+    this.listDtoPartido.push(new DtoPartido(this.psv, this.shakhtar, this.fecha1, this.nota3));
     this.listDtoPartido.push(new DtoPartido(this.liverpool, this.realMadrid, this.fecha1, this.nota3));
     this.listDtoPartido.push(new DtoPartido(this.celtic, this.clubBrugge, this.fecha1, this.nota3));
 
     this.listDtoPartido.push(new DtoPartido(this.america, this.toluca, this.fecha1, this.nota1));
     this.listDtoPartido.push(new DtoPartido(this.sanLuis, this.tigres, this.fecha1, this.nota1));
     this.listDtoPartido.push(new DtoPartido(this.monterrey, this.pumas, this.fecha1, this.nota1));
-    this.listDtoPartido.push(new DtoPartido(this.porDefinir, this.cruzAzul, this.fecha1, this.nota1));
-
-    this.listDtoPartido.push(new DtoPartido(this.cruzAzul, this.porDefinir, this.fecha2, this.nota2));
     this.listDtoPartido.push(new DtoPartido(this.pumas, this.monterrey, this.fecha2, this.nota2));
     this.listDtoPartido.push(new DtoPartido(this.tigres, this.sanLuis, this.fecha2, this.nota2));
     this.listDtoPartido.push(new DtoPartido(this.toluca, this.america, this.fecha2, this.nota2));
@@ -108,14 +120,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
         for (let index = 1; index < 11; ++index) {          
           resultado =  resultado+ this.formularioGroup.get('partido_'+index)?.value;
-          console.log(resultado);
-          if (index<10 && resultado != null ) {
+
+          if (index < 10 && resultado != null ) {
             resultado= resultado + ',';
           }
         }
-        this.resultados.push(resultado);
-        this.scrollToElement('ancla-enviar');
+        this.resultados.push(resultado);        
         this.formularioGroup.reset();
+        setTimeout(() => {
+          this.scrollToElement('ancla-enviar');
+        }, 200);  // 500 milisegundos = 0.5 segundos
+
+       
       }else{
         Swal.fire("¡Aún faltan partidos por seleccionar!");
       }
@@ -131,15 +147,15 @@ export class AppComponent implements OnInit, OnDestroy {
   //------------------------------//
   protected enviarTodo():void{
 
-    //-- Validamos que seleccione 2 quinielas
-    if (this.resultados.length < 2) {
-      Swal.fire("¡Necesitar por lo menos 2 Quienelas! (Agrega otra :D)!");
+    //-- Validamos que seleccione 1 quinielas
+    if (this.resultados.length < 1) {
+      Swal.fire("¡Necesitar por lo menos 1 Quienelas! (Agrega una :D)!");
       return;
     }
 
     //-- validamos formulario
     if (!this.formularioWhatsApp.valid) {
-      Swal.fire("No olvides escribir tu Nombre y Apellido");
+      Swal.fire("No olvides escribir tu primer Nombre y Apellido");
       return;
     }
 
@@ -162,7 +178,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     //-- Agregamos el total
     mensajeCompleto = mensajeCompleto + '\n';
-    mensajeCompleto = mensajeCompleto + 'Total: $' + (this.resultados.length * 10)
+    mensajeCompleto = mensajeCompleto + 'Total: $' + this.getTotalQuiniela();
 
     //-- Enviamos por WhatApp
     this.enviarMensaje(mensajeCompleto);
@@ -181,6 +197,8 @@ export class AppComponent implements OnInit, OnDestroy {
     } else {
       console.error(`Elemento con id "${id}" no encontrado.`);
     }
+
+    
   }
 
   //------------------------------//
@@ -242,7 +260,7 @@ export class AppComponent implements OnInit, OnDestroy {
    // Método para enviar un mensaje a WhatsApp
    enviarMensaje( mensaje: string): void {
 
-    let numero:string = '+525610172919'; 
+    let numero:string = '+5615485806'; 
 
     // Codificar el mensaje para que sea seguro para URL
     const mensajeCodificado = encodeURIComponent( mensaje);
@@ -254,6 +272,16 @@ export class AppComponent implements OnInit, OnDestroy {
     window.open(url, '_blank');
 
     this.formularioGroup.reset();
+  }
+
+
+  //-----------------------------------------------------------------//
+  protected getTotalQuiniela():number{
+    if(this.resultados != undefined && this.costoQuiniela!= undefined){
+      return this.resultados.length * this.costoQuiniela;
+    }
+    return 0;
+
   }
 
 }
