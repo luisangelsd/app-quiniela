@@ -70,6 +70,14 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
   protected fecha1:Date =new Date('2024-11-28')
   protected fecha2:Date =new Date('2024-11-31')
 
+  //-- Contador
+  private fechaLimite: Date = new Date('2024-11-27T09:59:59');
+  public dias: number = 0;
+  public horas: number = 0;
+  public minutos: number = 0;
+  public segundos: number = 0;
+  private intervaloContador: any;
+
   //------------------------------//
    public formularioGroup = new FormGroup({
      partido_1: new FormControl('', [Validators.required]),
@@ -197,38 +205,34 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
     } else {
       console.error(`Elemento con id "${id}" no encontrado.`);
     }
-
-    
+   
   }
 
   //------------------------------//
-  private fechaObjetivo: Date;
-  public dias: number = 0;
-  public horas: number = 0;
-  public minutos: number = 0;
-  public segundos: number = 0;
-  private intervaloContador: any;
+ 
 
   constructor() {
-    // Define la fecha objetivo aquí
-    this.fechaObjetivo = new Date('2024-11-26T23:59:59');
+
   }
 
+  //------------------------------//
   ngOnInit(): void {
-    this.actualizarContador();
     this.cargarPartidos();
+    this.actualizarContador();    
     this.intervaloContador = setInterval(() => this.actualizarContador(), 1000);
   }
 
+  //------------------------------//
   ngOnDestroy(): void {
     if (this.intervaloContador) {
       clearInterval(this.intervaloContador);
     }
   }
 
+  //------------------------------//
   private actualizarContador(): void {
     const ahora: Date = new Date();
-    const diferencia: number = this.fechaObjetivo.getTime() - ahora.getTime();
+    const diferencia: number = this.fechaLimite.getTime() - ahora.getTime();
 
     if (diferencia <= 0) {
       this.dias = 0;
@@ -245,7 +249,7 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
     this.segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
   }
 
-
+  //------------------------------//
   public generarCodigoAleatorio(longitud: number): string {
     const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let resultado = '';
@@ -257,20 +261,23 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
     return resultado;
   }
 
+  //------------------------------//
    // Método para enviar un mensaje a WhatsApp
-   enviarMensaje( mensaje: string): void {
+  public enviarMensaje( mensaje: string): void {
 
     let numero:string = '+5615485806'; 
 
     // Codificar el mensaje para que sea seguro para URL
     const mensajeCodificado = encodeURIComponent( mensaje);
 
-    // Crear la URL de WhatsApp
+    //-- Crear la URL de WhatsApp
     const url = `https://wa.me/${numero}?text=${mensajeCodificado}`;
 
-    // Abrir la URL en una nueva ventana o pestaña
+    //-- Abrir la URL en una nueva ventana o pestaña
     window.open(url, '_blank');
 
+    //-- Reiniciamos formulario
+    this.resultados = [];
     this.formularioGroup.reset();
   }
 
