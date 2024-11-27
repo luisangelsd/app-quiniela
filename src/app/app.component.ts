@@ -7,6 +7,8 @@ import { DtoEquipo } from './Quinielas/Dtos/dto-equipo';
 import Swal from 'sweetalert2';
 import { Constantes } from './Quinielas/Consts/constantes';
 import { CommonModule } from '@angular/common';
+import { GeneralService } from './Quinielas/Services/general.service';
+import { Equipos } from './Quinielas/Consts/equipos';
 
 
 @Component({
@@ -15,7 +17,7 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     RouterOutlet,
-    ReactiveFormsModule
+    ReactiveFormsModule  
      
   ],
   templateUrl: './app.component.html',
@@ -25,42 +27,8 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
 
   //======================= VERIABLES =======================//
   protected listDtoPartido: DtoPartido[] = [];
-
-  protected porDefinir: DtoEquipo= new DtoEquipo('Por Definir','porDefinir.webp');
-  protected america: DtoEquipo= new DtoEquipo('América','america.webp');
-  protected tijuana: DtoEquipo= new DtoEquipo('Tijuana','tijuana.webp');
-  protected sanLuis: DtoEquipo= new DtoEquipo('San Luis','sanLuis.webp');
-  protected pachuca: DtoEquipo= new DtoEquipo('Pachuca','pachuca.webp');
-  protected queretaro: DtoEquipo= new DtoEquipo('Querétaro','queretaro.webp');
-  protected pumas: DtoEquipo= new DtoEquipo('Pumas','pumas.webp');
-  protected chivas: DtoEquipo= new DtoEquipo('Chivas','chivas.webp');
-  protected mazatlan: DtoEquipo= new DtoEquipo('Mazatlán','mazatlan.webp');
-  protected monterrey: DtoEquipo= new DtoEquipo('Monterrey','monterrey.webp');
-  protected santos: DtoEquipo= new DtoEquipo('Santos','santos.webp');
-  protected atlas: DtoEquipo= new DtoEquipo('Atlas','atlas.webp');
-  protected cruzAzul: DtoEquipo= new DtoEquipo('Cruz Azul','cruzAzul.webp');
-  protected toluca: DtoEquipo= new DtoEquipo('Toluca','toluca.webp');
-  protected tigres: DtoEquipo= new DtoEquipo('Tigres','tigres.webp');
-  protected puebla: DtoEquipo= new DtoEquipo('Puebla','puebla.webp');
-  protected leon: DtoEquipo= new DtoEquipo('León','leon.webp');
-  protected necaxa: DtoEquipo= new DtoEquipo('Necaxa','necaxa.webp');
-  protected juarez: DtoEquipo= new DtoEquipo('FC Juárez','juarez.webp');
-
-  protected realMadrid: DtoEquipo= new DtoEquipo('Real Madrid','realMadrid.png');
-  protected espanyol: DtoEquipo= new DtoEquipo('Espanyol','espanyol.png');
-  protected osasuna: DtoEquipo= new DtoEquipo('Osasuna','osasuna.png');
-  protected lasPalmas: DtoEquipo= new DtoEquipo('Las Palmas','lasPalmas.png');
-  protected liverpool: DtoEquipo= new DtoEquipo('Liverpool','liverpool.png');
-  protected celtic: DtoEquipo= new DtoEquipo('Celtic','celtic.png');
-  protected clubBrugge: DtoEquipo= new DtoEquipo('Club Brugge','club-brugge.png'); 
-  
-  protected monaco: DtoEquipo= new DtoEquipo('Monaco','monaco.png');  
-  protected benfica: DtoEquipo= new DtoEquipo('Benfica','benfica.png');  
-  protected psv: DtoEquipo= new DtoEquipo('PSV','psv.png');  
-  protected shakhtar: DtoEquipo= new DtoEquipo('Shakhtar','shakhtar.png'); 
-
   protected url: string= Constantes.URL_IMAGENES;
-
+  
   public resultados: string[] = [];
   public costoQuiniela : number = 20;
 
@@ -71,14 +39,16 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
   protected fecha2:Date =new Date('2024-11-31')
 
   //-- Contador
-  private fechaLimite: Date = new Date('2024-11-27T09:59:59');
+  protected fechaHoy: Date = new Date();
+  protected fechaLimite: Date = new Date('2024-11-27T11:59:59');
   public dias: number = 0;
   public horas: number = 0;
   public minutos: number = 0;
   public segundos: number = 0;
   private intervaloContador: any;
 
-  //------------------------------//
+
+  //===============================================================//
    public formularioGroup = new FormGroup({
      partido_1: new FormControl('', [Validators.required]),
      partido_2: new FormControl('',[Validators.required]),
@@ -97,30 +67,47 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
     });
 
 
-    ngAfterViewChecked(): void {
+  //===============================================================//
+  ngAfterViewChecked(): void {
+
+  }
+
+  //------------------------------//
+  constructor(
+    private generalService: GeneralService
+  ) {
 
     }
 
   //------------------------------//
+  ngOnInit(): void {
+    this.cargarPartidos();
+    this.actualizarContador();    
+    this.intervaloContador = setInterval(() => this.actualizarContador(), 1000);
+  }
+
+  //------------------------------//
+  ngOnDestroy(): void {
+    if (this.intervaloContador) {
+      clearInterval(this.intervaloContador);
+    }
+  }
+  
+  //===============================================================//
   protected cargarPartidos():void {
-
-    this.listDtoPartido.push(new DtoPartido(this.monaco, this.benfica, this.fecha1, this.nota3));
-    this.listDtoPartido.push(new DtoPartido(this.psv, this.shakhtar, this.fecha1, this.nota3));
-    this.listDtoPartido.push(new DtoPartido(this.liverpool, this.realMadrid, this.fecha1, this.nota3));
-    this.listDtoPartido.push(new DtoPartido(this.celtic, this.clubBrugge, this.fecha1, this.nota3));
-
-    this.listDtoPartido.push(new DtoPartido(this.america, this.toluca, this.fecha1, this.nota1));
-    this.listDtoPartido.push(new DtoPartido(this.sanLuis, this.tigres, this.fecha1, this.nota1));
-    this.listDtoPartido.push(new DtoPartido(this.monterrey, this.pumas, this.fecha1, this.nota1));
-    this.listDtoPartido.push(new DtoPartido(this.pumas, this.monterrey, this.fecha2, this.nota2));
-    this.listDtoPartido.push(new DtoPartido(this.tigres, this.sanLuis, this.fecha2, this.nota2));
-    this.listDtoPartido.push(new DtoPartido(this.toluca, this.america, this.fecha2, this.nota2));
-
-
+    this.listDtoPartido.push(new DtoPartido(Equipos.porDefinir, Equipos.benfica, this.fecha1, this.nota3));
+    this.listDtoPartido.push(new DtoPartido(Equipos.psv, Equipos.shakhtar, this.fecha1, this.nota3));
+    this.listDtoPartido.push(new DtoPartido(Equipos.liverpool, Equipos.realMadrid, this.fecha1, this.nota3));
+    this.listDtoPartido.push(new DtoPartido(Equipos.celtic, Equipos.clubBrugge, this.fecha1, this.nota3));
+    this.listDtoPartido.push(new DtoPartido(Equipos.america, Equipos.toluca, this.fecha1, this.nota1));
+    this.listDtoPartido.push(new DtoPartido(Equipos.sanLuis, Equipos.tigres, this.fecha1, this.nota1));
+    this.listDtoPartido.push(new DtoPartido(Equipos.monterrey, Equipos.pumas, this.fecha1, this.nota1));
+    this.listDtoPartido.push(new DtoPartido(Equipos.pumas, Equipos.monterrey, this.fecha2, this.nota2));
+    this.listDtoPartido.push(new DtoPartido(Equipos.tigres, Equipos.sanLuis, this.fecha2, this.nota2));
+    this.listDtoPartido.push(new DtoPartido(Equipos.toluca, Equipos.america, this.fecha2, this.nota2));
   }    
 
     //------------------------------//
-
     public agregar():void{
       
       if (this.formularioGroup.valid) {
@@ -168,7 +155,7 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
     }
 
      //-- Numero alfanumerico:
-    let numeroAleatorio:string = this.generarCodigoAleatorio(4);
+    let numeroAleatorio:string = this.generalService.generarCodigoAleatorio(4);
 
     //-- Obtenemos todas las quinielas 
     let nombre: string = this.formularioWhatsApp.get('nombre')?.value + '';
@@ -192,6 +179,26 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
     this.enviarMensaje(mensajeCompleto);
   }
 
+   //------------------------------//
+   // Método para enviar un mensaje a WhatsApp
+   public enviarMensaje( mensaje: string): void {
+
+    let numero : string = '+5615485806'; 
+
+    // Codificar el mensaje para que sea seguro para URL
+    const mensajeCodificado = encodeURIComponent( mensaje);
+
+    //-- Crear la URL de WhatsApp
+    const url = `https://wa.me/${numero}?text=${mensajeCodificado}`;
+
+    //-- Abrir la URL en una nueva ventana o pestaña
+    window.open(url, '_blank');
+
+    //-- Reiniciamos formulario
+    this.resultados = [];
+    this.formularioGroup.reset();
+  }
+
 
   //------------------------------//
   // Método para desplazar la pantalla al elemento con el id especificado
@@ -208,26 +215,7 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
    
   }
 
-  //------------------------------//
- 
 
-  constructor() {
-
-  }
-
-  //------------------------------//
-  ngOnInit(): void {
-    this.cargarPartidos();
-    this.actualizarContador();    
-    this.intervaloContador = setInterval(() => this.actualizarContador(), 1000);
-  }
-
-  //------------------------------//
-  ngOnDestroy(): void {
-    if (this.intervaloContador) {
-      clearInterval(this.intervaloContador);
-    }
-  }
 
   //------------------------------//
   private actualizarContador(): void {
@@ -248,39 +236,6 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
     this.minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
     this.segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
   }
-
-  //------------------------------//
-  public generarCodigoAleatorio(longitud: number): string {
-    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let resultado = '';
-    const caracteresLength = caracteres.length;
-    for (let i = 0; i < longitud; i++) {
-      const indiceAleatorio = Math.floor(Math.random() * caracteresLength);
-      resultado += caracteres[indiceAleatorio];
-    }
-    return resultado;
-  }
-
-  //------------------------------//
-   // Método para enviar un mensaje a WhatsApp
-  public enviarMensaje( mensaje: string): void {
-
-    let numero:string = '+5615485806'; 
-
-    // Codificar el mensaje para que sea seguro para URL
-    const mensajeCodificado = encodeURIComponent( mensaje);
-
-    //-- Crear la URL de WhatsApp
-    const url = `https://wa.me/${numero}?text=${mensajeCodificado}`;
-
-    //-- Abrir la URL en una nueva ventana o pestaña
-    window.open(url, '_blank');
-
-    //-- Reiniciamos formulario
-    this.resultados = [];
-    this.formularioGroup.reset();
-  }
-
 
   //-----------------------------------------------------------------//
   protected getTotalQuiniela():number{

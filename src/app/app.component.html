@@ -3,7 +3,7 @@
     <div class="row contenedor-encabezado justify-content-center">
         <div class="col-lg-5 col-sm-12 text-center">
             <h1>💰⚽🏆</h1>
-            <h1><strong>¡ACIERTA TODOS LOS RESULTADOS CON TU QUINIELA FUTBOLERA!</strong></h1>
+            <h1><strong>¡DEMUESTRA TU HABILIDAD EN EL FÚTBOL Y LLÉVATE EL GRAN PREMIO!</strong></h1>
         </div>
     </div>
     <!----------------------------------------------------------->
@@ -69,9 +69,11 @@
                     </tbody>
                 </table>
                 <div>
+                    @if (fechaLimite > fechaHoy) {
                     <button class="btn btn-warning" (click)="agregar()">
                         Agrega Quiniela
-                    </button>        
+                    </button>
+                }        
                     <button class="btn btn-primary" onclick="window.open('https://docs.google.com/spreadsheets/d/1-3IijMH8JCEJIaQMlTjYyl6ckUBcDTDyrRjCp4jXCwY/edit?usp=sharing', '_blank')">
                         Ver Premio Ocumulado
                     </button>                    
