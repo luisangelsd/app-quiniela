@@ -1,14 +1,14 @@
 import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HomeComponent } from './Quinielas/Pages/home/home.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DtoPartido } from './Quinielas/Dtos/dto-partido';
-import { DtoEquipo } from './Quinielas/Dtos/dto-equipo';
 import Swal from 'sweetalert2';
 import { Constantes } from './Quinielas/Consts/constantes';
 import { CommonModule } from '@angular/common';
 import { GeneralService } from './Quinielas/Services/general.service';
-import { Equipos } from './Quinielas/Consts/equipos';
+import { PartidosService } from './Quinielas/Services/partidos.service';
+import { QuinielasService } from './Quinielas/Services/quinielas.service';
+import { DtoQuiniela } from './Quinielas/Dtos/dto-quiniela';
 
 
 @Component({
@@ -23,24 +23,26 @@ import { Equipos } from './Quinielas/Consts/equipos';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
+export class AppComponent implements OnInit, OnDestroy {
 
   //======================= VERIABLES =======================//
+
+
   protected listDtoPartido: DtoPartido[] = [];
   protected url: string= Constantes.URL_IMAGENES;
   
   public resultados: string[] = [];
+ 
+
+  //--- Configuracion quiniela
+  protected dtoQuiniela: DtoQuiniela = new DtoQuiniela(undefined, undefined,undefined)
   public costoQuiniela : number = 20;
 
-  protected nota1 : string='Partido de Ida';
-  protected nota2 : string='Partido de Vuelta';
-  protected nota3: string ='UEFA Champions League';
-  protected fecha1:Date =new Date('2024-11-28')
-  protected fecha2:Date =new Date('2024-11-31')
+  //-- Errores formulario Verificar Resultados
+  protected errorResultado: string = '';
+
 
   //-- Contador
-  protected fechaHoy: Date = new Date();
-  protected fechaLimite: Date = new Date('2024-11-27T11:59:59');
   public dias: number = 0;
   public horas: number = 0;
   public minutos: number = 0;
@@ -49,44 +51,48 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
 
 
   //===============================================================//
-   public formularioGroup = new FormGroup({
-     partido_1: new FormControl('', [Validators.required]),
-     partido_2: new FormControl('',[Validators.required]),
-     partido_3: new FormControl('',[Validators.required]),
-     partido_4: new FormControl('',[Validators.required]),
-     partido_5: new FormControl('',[Validators.required]),
-     partido_6: new FormControl('',[Validators.required]),
-     partido_7: new FormControl('',[Validators.required]),
-     partido_8: new FormControl('',[Validators.required]),
-     partido_9: new FormControl('',[Validators.required]),
-     partido_10: new FormControl('',[Validators.required])
+  public formularioGroup = new FormGroup({
+    partido_1: new FormControl('', [Validators.required]),
+    partido_2: new FormControl('',[Validators.required]),
+    partido_3: new FormControl('',[Validators.required]),
+    partido_4: new FormControl('',[Validators.required]),
+    partido_5: new FormControl('',[Validators.required]),
+    partido_6: new FormControl('',[Validators.required]),
+    partido_7: new FormControl('',[Validators.required]),
+    partido_8: new FormControl('',[Validators.required]),
+    partido_9: new FormControl('',[Validators.required]),
+    partido_10: new FormControl('',[Validators.required])
   });
 
-    public formularioWhatsApp = new FormGroup({
-      nombre: new FormControl('', [Validators.required])
-    });
+  public formularioWhatsApp = new FormGroup({
+    nombre: new FormControl('', [Validators.required])
+  });
 
+  protected formVerificarResultados = new FormGroup({
+    resultado: new FormControl('', [Validators.required]) 
+  });
 
   //===============================================================//
-  ngAfterViewChecked(): void {
-
-  }
-
-  //------------------------------//
   constructor(
-    private generalService: GeneralService
-  ) {
+    private generalService: GeneralService,
+    private partidosService: PartidosService,
+    private quinielasService: QuinielasService
+  ) { }
 
-    }
-
-  //------------------------------//
+  //--------------------------------------------------------------//
   ngOnInit(): void {
-    this.cargarPartidos();
-    this.actualizarContador();    
-    this.intervaloContador = setInterval(() => this.actualizarContador(), 1000);
+    let id: number =1;
+    this.listDtoPartido = this.partidosService.buscaPartidosPorIdQuiniela(id);
+    this.dtoQuiniela = this.quinielasService.buscarQuinielaPorId(id);
+
+    if (this.dtoQuiniela.fechaFin != undefined) {
+      let fehcaFin: Date = this.dtoQuiniela.fechaFin;
+      this.actualizarContador(fehcaFin); 
+      this.intervaloContador = setInterval(() => this.actualizarContador(fehcaFin), 1000); 
+    }
   }
 
-  //------------------------------//
+  //--------------------------------------------------------------//
   ngOnDestroy(): void {
     if (this.intervaloContador) {
       clearInterval(this.intervaloContador);
@@ -94,21 +100,8 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
   }
   
   //===============================================================//
-  protected cargarPartidos():void {
-    this.listDtoPartido.push(new DtoPartido(Equipos.porDefinir, Equipos.benfica, this.fecha1, this.nota3));
-    this.listDtoPartido.push(new DtoPartido(Equipos.psv, Equipos.shakhtar, this.fecha1, this.nota3));
-    this.listDtoPartido.push(new DtoPartido(Equipos.liverpool, Equipos.realMadrid, this.fecha1, this.nota3));
-    this.listDtoPartido.push(new DtoPartido(Equipos.celtic, Equipos.clubBrugge, this.fecha1, this.nota3));
-    this.listDtoPartido.push(new DtoPartido(Equipos.america, Equipos.toluca, this.fecha1, this.nota1));
-    this.listDtoPartido.push(new DtoPartido(Equipos.sanLuis, Equipos.tigres, this.fecha1, this.nota1));
-    this.listDtoPartido.push(new DtoPartido(Equipos.monterrey, Equipos.pumas, this.fecha1, this.nota1));
-    this.listDtoPartido.push(new DtoPartido(Equipos.pumas, Equipos.monterrey, this.fecha2, this.nota2));
-    this.listDtoPartido.push(new DtoPartido(Equipos.tigres, Equipos.sanLuis, this.fecha2, this.nota2));
-    this.listDtoPartido.push(new DtoPartido(Equipos.toluca, Equipos.america, this.fecha2, this.nota2));
-  }    
-
-    //------------------------------//
-    public agregar():void{
+ 
+  public agregarQuiniela():void{
       
       if (this.formularioGroup.valid) {
         let resultado:string = '';
@@ -132,14 +125,15 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
       }
     }
 
-    protected eliminar(posicion:number):void{
-      if (posicion >= 0 && posicion < this.resultados.length) {
-        this.resultados.splice(posicion, 1);
-      }
+  //--------------------------------------------------------------//
+  protected eliminarQuiniela(posicion:number):void{
+    if (posicion >= 0 && posicion < this.resultados.length) {
+      this.resultados.splice(posicion, 1);
     }
+  }
 
 
-  //------------------------------//
+  //--------------------------------------------------------------//
   protected enviarTodo():void{
 
     //-- Validamos que seleccione 1 quinielas
@@ -179,7 +173,7 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
     this.enviarMensaje(mensajeCompleto);
   }
 
-   //------------------------------//
+  //--------------------------------------------------------------//
    // Método para enviar un mensaje a WhatsApp
    public enviarMensaje( mensaje: string): void {
 
@@ -200,7 +194,7 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
   }
 
 
-  //------------------------------//
+  //--------------------------------------------------------------//
   // Método para desplazar la pantalla al elemento con el id especificado
   public scrollToElement(id: string): void {
     // Obtén el elemento por su id
@@ -216,11 +210,11 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
   }
 
 
+  //--------------------------------------------------------------//
+  private actualizarContador(fechaFin: Date): void {
 
-  //------------------------------//
-  private actualizarContador(): void {
     const ahora: Date = new Date();
-    const diferencia: number = this.fechaLimite.getTime() - ahora.getTime();
+    const diferencia: number = fechaFin.getTime() - ahora.getTime();
 
     if (diferencia <= 0) {
       this.dias = 0;
@@ -237,7 +231,7 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
     this.segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
   }
 
-  //-----------------------------------------------------------------//
+  //--------------------------------------------------------------//
   protected getTotalQuiniela():number{
     if(this.resultados != undefined && this.costoQuiniela!= undefined){
       return this.resultados.length * this.costoQuiniela;
@@ -246,4 +240,143 @@ export class AppComponent implements OnInit, OnDestroy , AfterViewChecked{
 
   }
 
+  //--------------------------------------------------------------//
+  protected estaActivaQuiniela():boolean{  
+    if (this.dtoQuiniela.fechaFin != undefined) {
+      if (this.dtoQuiniela.fechaFin < new Date()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+ //--------------------------------------------------------------//
+  protected buscaResultados(): void {
+
+    if (!this.validaFormularioConsultarResultados()) {      
+      return ;
+    }
+
+    // Paso 1: Eliminar todo antes del primer guion (incluido el guion)
+    let cadena: string = this.formVerificarResultados.get('resultado')?.value +'';
+
+     // Paso 2: Dividir la cadena restante por comas y generar un arreglo
+    const resultadosUsuario = cadena.split(',');
+
+    //-- Validamos que existan los 10 resultados de la quiniela
+    /**/
+    if (resultadosUsuario.length < 9) {
+
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Parece que tus resultados no están en el formato correcto. Asegúrate de ingresar toda la información de manera adecuada."
+      });
+
+      return;
+    }
+
+    //-- Obtenemos resultados
+    let informe:string[] = [];
+    let tabla: string = '';
+    
+    tabla += '<table>'
+      tabla += '<thead>'
+        tabla += '<tr>'
+          tabla += '<th>Local:</th>'                            
+          tabla += '<th>Visitante:</th>'
+          tabla += '<th>Ganador:</th>'
+          tabla += '<th>Pronostico:</th>'                                 
+          tabla += '<th></th>'
+        tabla += '</tr>'
+      tabla += '</thead>'
+      tabla += '<tbody>'
+        
+
+    let noAciertos:number = 0;
+    for (let e = 0; e < this.listDtoPartido.length; e++) {
+       
+      tabla +='<tr>'
+        tabla += '<td><small>'+this.listDtoPartido[e].local.nombre+'</small></td>'
+        tabla +='<td><small>'+this.listDtoPartido[e].visitante.nombre+'</small></td>'
+        tabla +='<td><small>'+this.listDtoPartido[e].ganador+'</small></td>'
+        tabla +='<td><small>'+resultadosUsuario[e] +'</small></td>'
+        if (this.listDtoPartido[e].ganador != 'P') {
+          if (resultadosUsuario[e] == this.listDtoPartido[e].ganador) {
+            tabla +='<td>✔️</td>'
+            noAciertos++;
+          }else{
+             tabla +='<td>❌</td>'
+          }           
+        }else{
+           tabla +='<td><small> Pendiente</small> </td>'
+        }
+       
+      tabla +='</tr> '
+    }
+
+    tabla +='</tbody>'
+    tabla +='</table>'   
+
+    tabla+='<br>'
+    tabla+='<ul>'
+      tabla+='<li> <b>Aciertos: </b> ' + noAciertos + '</li>'
+    tabla+='</ul>'
+
+
+    Swal.fire({
+      title: "Tus Resultados:",
+      html: tabla
+    });
+    
+}
+
+//--------------------------------------------------------------//
+private validaFormularioConsultarResultados():boolean{
+
+  if (this.formVerificarResultados.valid) {
+    this.errorResultado = '';
+    return true;
+  }
+
+  let resultado = this.formVerificarResultados.get('resultado')?.errors;
+
+if (resultado) {
+  // Usamos un switch para manejar los errores específicos
+  switch (true) {
+    case resultado['required']:
+      this.errorResultado = 'El campo es obligatorio';
+      break;
+    default:
+      this.errorResultado = 'Error desconocido';
+      break;
+  }
+}
+
+  return false;
+}
+
+
+  protected blurFormResultados(formGroup: FormGroup, formControl: string):void{
+
+    let cadena: string = this.formVerificarResultados.get('resultado')?.value +'';
+    
+    cadena = cadena.toUpperCase();
+    cadena = cadena.replace(/\s+/g, '');     //-- Eliminamos todos los espacios
+    cadena = cadena.replace(/[^LVE,]/g, ''); //-- Elimina todo que no sea LVEP Y ,
+    cadena = cadena.replace(/,+/g, ',');     //-- Elimina comas duplicadas 
+    cadena=cadena.replace(/^,+|,+$/g, '');   //-- Elimina todas las comas de inicio y fin
+    cadena = cadena
+    .split(',')                         // Paso 1: Dividir la cadena por comas
+    .map(item => item[0])               // Paso 2: Quedarse solo con el primer carácter de cada item
+    .join(',');                         // Paso 3: Volver a juntar los elementos con comas
+    
+
+
+
+  
+    
+    this.formVerificarResultados.get('resultado')?.setValue(cadena);
+
+  }
 }

@@ -19,21 +19,43 @@
         </div>
     </div>
     <!----------------------------------------------------------->
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-4 col-md-3 justify-content-center">
+            <small>Paso 1/3</small>
+            <h3>Elige tus Ganadores</h3>
+        </div>
+        <div class="col col-md-4 d-flex justify-content-end">
+            <form [formGroup]="formVerificarResultados">
+                <div class="input-group">
+                    <input 
+                    type="text" 
+                    class="form-control"
+                    formControlName="resultado"
+                    name="resultados"
+                    (blur)="blurFormResultados(formVerificarResultados, 'resultado')"
+                    >
+                    <button class="btn btn-danger" (click)="buscaResultados()">Consultar</button>
+                </div>
+            </form>
+            @if (errorResultado) {
+                <br>
+                <div>
+                    <small class="text-danger">{{errorResultado}}</small>
+                </div>
+            }            
+        </div>        
+    </div>
     <!-- foormulario-->
     <div class="row justify-content-center py-2">
         <div class="col-12 col-md-8 d-flex flex-column justify-content-center">
-            <div class="py-3">
-                <small>Paso 1/3</small>
-                <h3>Elige tus Ganadores</h3>
-            </div>
             <form [formGroup]="formularioGroup">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Local:</th>
+                            <th>Local:</th>                            
                             <th>Empate:</th>
-                            <th>Visitante:</th>
-                            <th>Datos:</th>
+                            <th>Visitante:</th>                            
+                            <th class="d-none d-sm-block">Datos:</th>
                             <th>Fecha:</th>
                         </tr>
                     </thead>
@@ -44,21 +66,26 @@
                                 <img src="{{url}}/{{partido.local.icono}}" height="25px" class="mx-2">
                                 <input formControlName="partido_{{$index+1}}" class="form-check-input mx-2" type="radio"
                                     name="partido_{{$index+1}}" value="L">
-                                <label class="form-check-label">{{partido.local.nombre}}</label>
+                                <label class="form-check-label">
+                                    @if (partido.ganador != 'P') { <small class="bg-success text-white px-1">{{partido.golesLocal}}</small>}
+                                    {{partido.local.nombre}}
+                                </label>
                             </td>
                             <td>
                                 <input formControlName="partido_{{$index+1}}" class="form-check-input mx-2" type="radio"
                                     name="partido_{{$index+1}}" value="E">
-                                <label class="form-check-label">Empate</label>
-                                
+                                <label class="form-check-label">Empate</label>                                
                             </td>
                             <td>
                                 <img src="{{url}}/{{partido.visitante.icono}}" height="25px" class="mx-2">
                                 <input formControlName="partido_{{$index+1}}" class="form-check-input mx-2" type="radio"
                                     name="partido_{{$index+1}}" value="V">
-                                <label class="form-check-label">{{partido.visitante.nombre}}</label>
+                                <label class="form-check-label">
+                                    @if (partido.ganador != 'P') {  <small class="bg-success text-white px-1">{{partido.golesVisitante}}</small>}
+                                    {{partido.visitante.nombre}}
+                                </label>
                             </td>
-                            <td>
+                            <td class="d-none d-sm-block">
                                 <small>{{partido.nota}}</small>
                             </td>
                             <td>
@@ -69,11 +96,11 @@
                     </tbody>
                 </table>
                 <div>
-                    @if (fechaLimite > fechaHoy) {
-                    <button class="btn btn-warning" (click)="agregar()">
+                    @if (estaActivaQuiniela()) {
+                    <button class="btn btn-warning" (click)="agregarQuiniela()">
                         Agrega Quiniela
                     </button>
-                }        
+                    }        
                     <button class="btn btn-primary" onclick="window.open('https://docs.google.com/spreadsheets/d/1-3IijMH8JCEJIaQMlTjYyl6ckUBcDTDyrRjCp4jXCwY/edit?usp=sharing', '_blank')">
                         Ver Premio Ocumulado
                     </button>                    
@@ -83,9 +110,9 @@
     </div>
     <hr>
     @if (resultados.length > 0) {
-    <div class="row  d-flex flex-column align-items-center py-4" style="background-color: rgb(241, 241, 241);">
-        <div class="col-md-5 col-sm-12">
-            <div>
+    <div class="row d-flex flex-column align-items-center py-4" style="background-color: rgb(241, 241, 241);">
+        <div class="col-md-7 col-sm-12">
+            <div class="col">
                 <small>Paso 2/3</small>
                 <h3>Envia tus Pronósticos</h3>
             </div>
@@ -95,12 +122,12 @@
                     {{item}}
                 </div>   
                 <div class="col-6 p-1">             
-                     <button class="btn btn-sm btn-danger" (click)="eliminar($index)"> Eliminar </button>
+                     <button class="btn btn-sm btn-danger" (click)="eliminarQuiniela($index)"> Eliminar </button>
                 </div>
                 }
             </div>
         </div>
-        <div class="col-md-5 col-sm-12 pt-4">           
+        <div class="col-md-7 col-sm-12 pt-4">           
             <b><p>Total:$ {{getTotalQuiniela()}} MXN</p></b>
             <form class="form my-2" [formGroup]="formularioWhatsApp">
                 <label class="form-check-label">Nombre y Apellido: </label>
@@ -130,3 +157,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
     integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
     crossorigin="anonymous"></script>
+
+
+ 
