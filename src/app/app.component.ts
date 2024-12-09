@@ -30,13 +30,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   protected listDtoPartido: DtoPartido[] = [];
   protected url: string= Constantes.URL_IMAGENES;
+  //protected url: string= Constantes.URL_IMAGENES_DES;
   
   public resultados: string[] = [];
  
 
   //--- Configuracion quiniela
   protected dtoQuiniela: DtoQuiniela = new DtoQuiniela(undefined, undefined,undefined)
-  public costoQuiniela : number = 20;
+  public costoQuiniela : number = 15;
 
   //-- Errores formulario Verificar Resultados
   protected errorResultado: string = '';
@@ -81,14 +82,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   //--------------------------------------------------------------//
   ngOnInit(): void {
-    let id: number =1;
+    let id: number =2;
     this.listDtoPartido = this.partidosService.buscaPartidosPorIdQuiniela(id);
     this.dtoQuiniela = this.quinielasService.buscarQuinielaPorId(id);
 
-    if (this.dtoQuiniela.fechaFin != undefined) {
-      let fehcaFin: Date = this.dtoQuiniela.fechaFin;
-      this.actualizarContador(fehcaFin); 
-      this.intervaloContador = setInterval(() => this.actualizarContador(fehcaFin), 1000); 
+    if (this.dtoQuiniela.fechaInicio != undefined) {
+      let fehcaInicio: Date = this.dtoQuiniela.fechaInicio;
+      this.actualizarContador(fehcaInicio); 
+      this.intervaloContador = setInterval(() => this.actualizarContador(fehcaInicio), 1000); 
     }
   }
 

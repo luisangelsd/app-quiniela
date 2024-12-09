@@ -33,4 +33,28 @@ export class Equipos {
     public static benfica: DtoEquipo= new DtoEquipo(undefined, 'Benfica','benfica.png');  
     public static psv: DtoEquipo= new DtoEquipo(undefined, 'PSV','psv.png');  
     public static shakhtar: DtoEquipo= new DtoEquipo(undefined, 'Shakhtar','shakhtar.png'); 
+
+    //-- Serie Italina
+    public static juventus: DtoEquipo = new DtoEquipo(undefined, 'Juventus','juventus.png');
+    public static manCity: DtoEquipo = new DtoEquipo(undefined,' Man City','man-city.png');
+    public static bDortmund : DtoEquipo = new DtoEquipo(undefined,'B. Dortmund','b-dortmund.png');
+    public static barcelona: DtoEquipo = new DtoEquipo(undefined,'Barcelona', 'barcelona.png');
+    public static feyenoord : DtoEquipo = new DtoEquipo(undefined,'Feyenoord', 'feyenoord.png');
+    public static spartaPraha : DtoEquipo = new DtoEquipo(undefined,'Sparta Praha', 'sparta-praha.png');
+    public static arsenal : DtoEquipo = new DtoEquipo(undefined,'Arsenal', 'arsenal.png');
+    public static empoli : DtoEquipo = new DtoEquipo(undefined,'Empoli', 'empoli.png');
+    public static torino : DtoEquipo = new DtoEquipo(undefined,'Torino', 'torino.png');
+    public static udinese : DtoEquipo = new DtoEquipo(undefined,'Udinese', 'udinese.png');
+    public static napoles : DtoEquipo = new DtoEquipo(undefined,'Nápoles', 'napoles.png');
+    public static parma : DtoEquipo = new DtoEquipo(undefined,'Parma', 'parma.png');
+    public static hellasVerona : DtoEquipo = new DtoEquipo(undefined,'Hellas Verona', 'hellas-verona.png');
+    public static milan : DtoEquipo = new DtoEquipo(undefined,'Milan', 'milan.png');
+    public static genoa : DtoEquipo = new DtoEquipo(undefined,'Genoa', 'genoa.png');
+
+
+
+
+    
+
+
 }

@@ -33,6 +33,28 @@ public buscaPartidosPorIdQuiniela(idQuiniela: number):DtoPartido[]{
                 listPartidos.push(new DtoPartido(undefined,1, Equipos.tigres, Equipos.sanLuis, 0, 0, new Date(), 'Nota', 'E'));
                 listPartidos.push(new DtoPartido(undefined,1, Equipos.toluca, Equipos.america, 0, 2, new Date(), 'Nota', 'V'));
                 break;
+
+            case 2:              
+              listPartidos.push(new DtoPartido(undefined,2, Equipos.juventus, Equipos.manCity, 0, 0, new Date('2024-12-11T14:00:00'), 'UEFA Champions League', 'P'));
+              listPartidos.push(new DtoPartido(undefined,2, Equipos.bDortmund, Equipos.barcelona, 0, 0, new Date('2024-12-11T14:00:00'), 'UEFA Champions League', 'P'));
+              listPartidos.push(new DtoPartido(undefined,2, Equipos.feyenoord, Equipos.spartaPraha, 0, 0, new Date('2024-12-11T14:00:00'), 'UEFA Champions League', 'P'));
+              listPartidos.push(new DtoPartido(undefined,2, Equipos.arsenal, Equipos.monaco, 0, 0, new Date('2024-12-11T14:00:00'), 'UEFA Champions League', 'P'));
+              listPartidos.push(new DtoPartido(undefined,2, Equipos.america, Equipos.monterrey, 0, 0, new Date('2024-12-12T15:00:00'), 'Final MX (Ida)', 'P'));
+              listPartidos.push(new DtoPartido(undefined,2, Equipos.empoli, Equipos.torino, 0, 0, new Date('2024-12-13T14:00:00'), 'Serie A', 'P'));
+              listPartidos.push(new DtoPartido(undefined,2, Equipos.udinese, Equipos.napoles, 0, 0, new Date('2024-12-14T14:00:00'), 'Serie A', 'P'));
+              listPartidos.push(new DtoPartido(undefined,2, Equipos.parma, Equipos.hellasVerona, 0, 0, new Date('2024-12-15T14:00:00'), 'Serie A', 'P'));
+              listPartidos.push(new DtoPartido(undefined,2, Equipos.milan, Equipos.genoa, 0, 0, new Date('2024-12-15T15:00:00'), 'Serie A', 'P'));
+              listPartidos.push(new DtoPartido(undefined,2, Equipos.monterrey, Equipos.america, 0, 0, new Date('2024-12-15T15:00:00'), 'Final MX (Vuelta)', 'P'));
+
+
+              
+
+
+
+
+
+
+              break;    
         
             default:
                 break; 
