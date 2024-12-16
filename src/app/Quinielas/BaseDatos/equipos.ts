@@ -33,6 +33,34 @@ export class Equipos {
     public static benfica: DtoEquipo= new DtoEquipo(undefined, 'Benfica','benfica.png');  
     public static psv: DtoEquipo= new DtoEquipo(undefined, 'PSV','psv.png');  
     public static shakhtar: DtoEquipo= new DtoEquipo(undefined, 'Shakhtar','shakhtar.png'); 
+    public static atleticoMadrid: DtoEquipo= new DtoEquipo(undefined, 'Atlético Madrid','atletico-madrid.png'); 
+
+    public static celtaDeVigo: DtoEquipo= new DtoEquipo(undefined, 'Celta de Vigo','celta-de-vigo.png'); 
+    public static realSociedad: DtoEquipo= new DtoEquipo(undefined, 'Real Sociedad','real-sociedad.png'); 
+    public static sevilla: DtoEquipo= new DtoEquipo(undefined, 'Sevilla ','sevilla.png'); 
+
+    public static leganes: DtoEquipo= new DtoEquipo(undefined, 'Leganes ','leganes.png');
+    public static villareal: DtoEquipo= new DtoEquipo(undefined, 'Villa Real ','villa-real.png'); 
+
+    public static atalanta: DtoEquipo= new DtoEquipo(undefined, 'Atalanta','atalanta.png'); 
+    public static roma: DtoEquipo= new DtoEquipo(undefined, 'Roma','roma.png'); 
+
+    public static moreirense: DtoEquipo= new DtoEquipo(undefined, 'Moreirense','moreirense.png'); 
+    public static porto: DtoEquipo= new DtoEquipo(undefined, 'Porto','porto.png'); 
+
+    public static tottenham: DtoEquipo= new DtoEquipo(undefined, 'Tottenham','tottenham.png');
+    public static astonVilla: DtoEquipo= new DtoEquipo(undefined, 'Aston Villa','aston-villa.png'); 
+    public static manchesterCity: DtoEquipo= new DtoEquipo(undefined, 'Manchester City','manchester-city.png'); 
+
+    
+ 
+     
+
+
+
+
+
+
 
     //-- Serie Italina
     public static juventus: DtoEquipo = new DtoEquipo(undefined, 'Juventus','juventus.png');

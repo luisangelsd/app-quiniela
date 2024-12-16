@@ -14,7 +14,10 @@ export class QuinielasService {
         break;
       case 2:
         return new DtoQuiniela(1, new Date('2024-12-11T12:00:00'),new Date('2024-12-15T22:00:00'));
-      break;  
+      break; 
+      case 3:
+        return new DtoQuiniela(1, new Date('2024-12-20T23:59:00'),new Date('2024-12-22T22:00:00'));
+      break;   
     
       default:
         return new DtoQuiniela(undefined, new Date('2024-11-27T11:59:59'),new Date('2024-11-27T11:59:59'));

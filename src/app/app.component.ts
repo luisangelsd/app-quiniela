@@ -82,7 +82,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   //--------------------------------------------------------------//
   ngOnInit(): void {
-    let id: number =2;
+    let id: number = 3;
     this.listDtoPartido = this.partidosService.buscaPartidosPorIdQuiniela(id);
     this.dtoQuiniela = this.quinielasService.buscarQuinielaPorId(id);
 
@@ -243,8 +243,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   //--------------------------------------------------------------//
   protected estaActivaQuiniela():boolean{  
-    if (this.dtoQuiniela.fechaFin != undefined) {
-      if (this.dtoQuiniela.fechaFin < new Date()) {
+    if (this.dtoQuiniela.fechaInicio != undefined) {
+      if (this.dtoQuiniela.fechaInicio < new Date()) {
         return false;
       }
     }
