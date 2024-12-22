@@ -46,22 +46,19 @@ public buscaPartidosPorIdQuiniela(idQuiniela: number):DtoPartido[]{
               break;
 
               case 3:              
-              listPartidos.push(new DtoPartido(undefined,3, Equipos.barcelona, Equipos.atleticoMadrid, 0, 0, new Date('2024-12-21T00:00:00'), 'laLiga', 'P'));
-              listPartidos.push(new DtoPartido(undefined,3, Equipos.celtaDeVigo, Equipos.realSociedad, 0, 0, new Date('2024-12-21T00:00:00'), 'laLiga', 'P'));
+              listPartidos.push(new DtoPartido(undefined,3, Equipos.barcelona, Equipos.atleticoMadrid, 1, 2, new Date('2024-12-21T00:00:00'), 'laLiga', 'V'));
+              listPartidos.push(new DtoPartido(undefined,3, Equipos.celtaDeVigo, Equipos.realSociedad, 2, 0, new Date('2024-12-21T00:00:00'), 'laLiga', 'L'));
 
-              listPartidos.push(new DtoPartido(undefined,3, Equipos.genoa, Equipos.napoles, 0, 0, new Date('2024-12-21T00:00:00'), 'Serie A', 'P'));
-
-
-              listPartidos.push(new DtoPartido(undefined,3, Equipos.astonVilla, Equipos.manchesterCity, 0, 0, new Date('2024-12-22T00:00:00'), 'Premier League', 'P'));
+              listPartidos.push(new DtoPartido(undefined,3, Equipos.genoa, Equipos.napoles, 1, 2, new Date('2024-12-21T00:00:00'), 'Serie A', 'V'));
 
 
-
-              listPartidos.push(new DtoPartido(undefined,3, Equipos.realMadrid, Equipos.sevilla, 0, 0, new Date('2024-12-22T00:00:00'), 'laLiga', 'P'));
-              listPartidos.push(new DtoPartido(undefined,3, Equipos.leganes, Equipos.villareal, 0, 0, new Date('2024-12-22T00:00:00'), 'laLiga', 'P'));
-              listPartidos.push(new DtoPartido(undefined,3, Equipos.atalanta, Equipos.empoli, 0, 0, new Date('2024-12-22T00:00:00'), 'Serie A', 'P'));
-              listPartidos.push(new DtoPartido(undefined,3, Equipos.roma, Equipos.parma, 0, 0, new Date('2024-12-22T00:00:00'), 'Serie A', 'P'));
-              listPartidos.push(new DtoPartido(undefined,3, Equipos.psv, Equipos.feyenoord, 0, 0, new Date('2024-12-22T00:00:00'), 'Eredivisie', 'P'));
-              listPartidos.push(new DtoPartido(undefined,3, Equipos.tottenham, Equipos.liverpool, 0, 0, new Date('2024-12-22T00:00:00'), 'Premier League', 'P'));
+              listPartidos.push(new DtoPartido(undefined,3, Equipos.astonVilla, Equipos.manchesterCity, 2, 1, new Date('2024-12-21T00:00:00'), 'Premier League', 'L'));
+              listPartidos.push(new DtoPartido(undefined,3, Equipos.realMadrid, Equipos.sevilla, 4, 2, new Date('2024-12-22T00:00:00'), 'laLiga', 'L'));
+              listPartidos.push(new DtoPartido(undefined,3, Equipos.leganes, Equipos.villareal, 2, 5, new Date('2024-12-22T00:00:00'), 'laLiga', 'V'));
+              listPartidos.push(new DtoPartido(undefined,3, Equipos.atalanta, Equipos.empoli, 3, 2, new Date('2024-12-22T00:00:00'), 'Serie A', 'L'));
+              listPartidos.push(new DtoPartido(undefined,3, Equipos.roma, Equipos.parma, 5, 0, new Date('2024-12-22T00:00:00'), 'Serie A', 'L'));
+              listPartidos.push(new DtoPartido(undefined,3, Equipos.psv, Equipos.feyenoord, 3, 0, new Date('2024-12-22T00:00:00'), 'Eredivisie', 'L'));
+              listPartidos.push(new DtoPartido(undefined,3, Equipos.tottenham, Equipos.liverpool, 3, 6, new Date('2024-12-22T00:00:00'), 'Premier League', 'V'));
 
 
 
